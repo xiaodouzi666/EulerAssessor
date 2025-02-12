@@ -3,7 +3,6 @@ import json
 import platform
 import subprocess
 
-
 def collect_system_info(output_file="system_info.json"):
     """
     Collect system information and save to a JSON file.
@@ -33,6 +32,7 @@ def collect_system_info(output_file="system_info.json"):
                 system_info["fstab"] = "No /etc/fstab file found."
 
         elif platform.system() == "Windows":
+            # Windows下采集:
             system_info["cpu_info"] = subprocess.getoutput("wmic cpu get Name,NumberOfCores,MaxClockSpeed /format:list")
             system_info["memory_info"] = subprocess.getoutput("wmic OS get TotalVisibleMemorySize,FreePhysicalMemory /format:list")
             system_info["disk_info"] = subprocess.getoutput("wmic logicaldisk get name,freespace,size /format:list")
@@ -41,13 +41,12 @@ def collect_system_info(output_file="system_info.json"):
 
         system_info["environment_variables"] = dict(os.environ)
 
-        with open(output_file, "w") as json_file:
+        with open(output_file, "w", encoding="utf-8") as json_file:
             json.dump(system_info, json_file, indent=4, ensure_ascii=False)
         print(f"System information collected and saved to {output_file}.")
     
     except Exception as e:
         print(f"Error collecting system information: {e}")
-
 
 if __name__ == "__main__":
     collect_system_info()

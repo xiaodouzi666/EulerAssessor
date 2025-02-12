@@ -3,13 +3,12 @@ import json
 import platform
 import subprocess
 
-
 def extract_installed_packages(output_file="sourceinfo.json"):
-
     package_list = []
 
     if platform.system() == "Linux":
         try:
+            # rpm -qa 获取所有已安装包
             result = subprocess.getoutput("rpm -qa --qf '%{NAME} %{VERSION}-%{RELEASE}\\n'")
             for line in result.split("\n"):
                 if line:
@@ -33,7 +32,6 @@ def extract_installed_packages(output_file="sourceinfo.json"):
                             encoding="utf-8"
                         ).stdout.strip().split("\n")
 
-                        # 存储完整信息
                         package_list.append({
                             "name": name,
                             "version": version,
@@ -42,35 +40,33 @@ def extract_installed_packages(output_file="sourceinfo.json"):
                         })
         except Exception as e:
             print(f"Error collecting installed RPM packages: {e}")
-    
     else:
         print("This script is only supported on Linux.")
         return
 
+    # 写入 sourceinfo.json
     try:
-        with open(output_file, "w") as json_file:
-            json.dump({"software_packages": package_list}, json_file, indent=4)
+        with open(output_file, "w", encoding="utf-8") as json_file:
+            json.dump({"software_packages": package_list}, json_file, indent=4, ensure_ascii=False)
         print(f"Installed packages extracted and saved to {output_file}.")
     except Exception as e:
         print(f"Error saving JSON file: {e}")
 
 
 def is_iso_mounted(mount_point):
-
     result = subprocess.run(["findmnt", mount_point], stdout=subprocess.PIPE, text=True)
     return result.returncode == 0
 
 
 def extract_packages_from_iso(iso_path, output_file="targetinfo.json"):
-
     package_list = []
     mount_point = "/mnt/iso"
 
     os.makedirs(mount_point, exist_ok=True)
-
     iso_already_mounted = is_iso_mounted(mount_point)
 
     try:
+        # 挂载ISO
         if not iso_already_mounted:
             subprocess.run(["sudo", "mount", "-o", "loop", iso_path, mount_point], check=True)
 
@@ -79,6 +75,7 @@ def extract_packages_from_iso(iso_path, output_file="targetinfo.json"):
             print(f"Error: Packages directory not found in {mount_point}.")
             return
 
+        # 扫描所有rpm文件
         for file_name in os.listdir(packages_dir):
             if file_name.endswith(".rpm"):
                 try:
@@ -115,14 +112,14 @@ def extract_packages_from_iso(iso_path, output_file="targetinfo.json"):
 
     except Exception as e:
         print(f"Error processing ISO: {e}")
-
     finally:
         if not iso_already_mounted:
             subprocess.run(["sudo", "umount", mount_point], check=True)
 
+    # 写入 targetinfo.json
     try:
-        with open(output_file, "w") as json_file:
-            json.dump({"software_packages": package_list}, json_file, indent=4)
+        with open(output_file, "w", encoding="utf-8") as json_file:
+            json.dump({"software_packages": package_list}, json_file, indent=4, ensure_ascii=False)
         print(f"ISO packages extracted and saved to {output_file}.")
     except Exception as e:
         print(f"Error saving JSON file: {e}")
@@ -130,9 +127,9 @@ def extract_packages_from_iso(iso_path, output_file="targetinfo.json"):
 
 if __name__ == "__main__":
     if platform.system() == "Linux":
-        # 采集当前系统的 RPM 软件包信息
+        # 采集当前系统的 RPM 软件包信息 => sourceinfo.json
         extract_installed_packages(output_file="sourceinfo.json")
 
-        # 采集 openEuler ISO 镜像的 RPM 软件包信息
+        # 采集 openEuler ISO 镜像的 RPM 软件包信息 => targetinfo.json
         iso_path = "/home/kylin/桌面/openEuler-24.03-LTS-SP1-x86_64-dvd.iso"
         extract_packages_from_iso(iso_path=iso_path, output_file="targetinfo.json")
