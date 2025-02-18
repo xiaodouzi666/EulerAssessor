@@ -1,0 +1,224 @@
+{
+    "config_diff": {
+        "missing_in_target": [
+            "/etc/yum.repos.d/CentOS-CR.repo",
+            "/etc/yum.repos.d/CentOS-Debuginfo.repo",
+            "/etc/yum.repos.d/CentOS-Media.repo",
+            "/etc/yum.repos.d/CentOS-Sources.repo",
+            "/etc/yum.repos.d/CentOS-Vault.repo",
+            "/etc/yum.repos.d/CentOS-fasttrack.repo",
+            "/etc/yum.repos.d/CentOS-Base.repo.bak",
+            "/etc/yum.repos.d/CentOS-Base.repo",
+            "/etc/yum.repos.d/CentOS-x86_64-kernel.repo",
+            "/etc/yum.repos.d/vscode.repo",
+            "/etc/yum.repos.d/CentOS-SCLo-scl-rh.repo",
+            "/etc/yum.repos.d/nodesource-nodejs.repo",
+            "/etc/yum.repos.d/nodesource-nsolid.repo"
+        ],
+        "found_in_target": [
+            {
+                "file_path": "/etc/fstab",
+                "found_in_rpms": [
+                    "setup-2.14.5-2.oe2403sp1.noarch.rpm"
+                ]
+            },
+            {
+                "file_path": "/etc/ssh/sshd_config",
+                "found_in_rpms": [
+                    "openssh-server-9.6p1-3.oe2403sp1.x86_64.rpm"
+                ]
+            },
+            {
+                "file_path": "/etc/sysctl.conf",
+                "found_in_rpms": [
+                    "systemd-255-34.oe2403sp1.x86_64.rpm"
+                ]
+            }
+        ],
+        "content_note": "Target only provides file path existence (no actual content)."
+    },
+    "hardware_diff": {
+        "missing_modules_in_target": [
+            "rfkill",
+            "nf_defrag_ipv6",
+            "ata_piix",
+            "rfcomm",
+            "cdrom",
+            "stp",
+            "vmw_vmci",
+            "nf_conntrack_ipv6",
+            "ipt_MASQUERADE",
+            "iptable_nat",
+            "xt_conntrack",
+            "ata_generic",
+            "iptable_filter",
+            "sunrpc",
+            "udp_diag",
+            "btusb",
+            "pata_acpi",
+            "loop",
+            "serio_raw",
+            "llc",
+            "parport_pc",
+            "drm",
+            "sysimgblt",
+            "ebtable_nat",
+            "glue_helper",
+            "libnvdimm",
+            "bnep",
+            "ppdev",
+            "sg",
+            "drm_kms_helper",
+            "ghash_clmulni_intel",
+            "crct10dif_generic",
+            "nfit",
+            "nf_nat_ipv6",
+            "iptable_security",
+            "sd_mod",
+            "nf_nat",
+            "crc32_pclmul",
+            "nf_nat_masquerade_ipv4",
+            "nls_utf8",
+            "xfs",
+            "inet_diag",
+            "ablk_helper",
+            "vmwgfx",
+            "dm_mod",
+            "nf_conntrack",
+            "joydev",
+            "bridge",
+            "dm_region_hash",
+            "ip6t_REJECT",
+            "nf_nat_ipv4",
+            "ip6t_rpfilter",
+            "crct10dif_common",
+            "crct10dif_pclmul",
+            "dm_mirror",
+            "devlink",
+            "mptscsih",
+            "btintel",
+            "ebtables",
+            "ip_tables",
+            "tcp_diag",
+            "nf_reject_ipv6",
+            "syscopyarea",
+            "sr_mod",
+            "ip6table_mangle",
+            "crc_t10dif",
+            "ip_set",
+            "isofs",
+            "tcp_lp",
+            "crc32c_intel",
+            "tun",
+            "ebtable_filter",
+            "nf_defrag_ipv4",
+            "e1000",
+            "fb_sys_fops",
+            "ipt_REJECT",
+            "vmw_balloon",
+            "mptbase",
+            "ip6table_security",
+            "ip6table_filter",
+            "ttm",
+            "fuse",
+            "btbcm",
+            "lrw",
+            "cryptd",
+            "mptspi",
+            "parport",
+            "i2c_piix4",
+            "libata",
+            "dm_log",
+            "xt_CHECKSUM",
+            "ebtable_broute",
+            "vsock",
+            "iptable_mangle",
+            "btrtl",
+            "vmw_vsock_vmci_transport",
+            "drm_panel_orientation_quirks",
+            "pcspkr",
+            "scsi_transport_spi",
+            "libcrc32c",
+            "iptable_raw",
+            "bluetooth",
+            "gf128mul",
+            "ip6table_nat",
+            "ip6_tables",
+            "nf_conntrack_ipv4",
+            "ip6table_raw",
+            "aesni_intel",
+            "sysfillrect",
+            "nf_reject_ipv4"
+        ],
+        "extra_modules_in_target": [
+            "igb_uio.ko",
+            "dim_core.ko",
+            "dim_monitor.ko",
+            "tutor.ko",
+            "mc.hint.ko",
+            "smc_acc.ko"
+        ]
+    },
+    "command_diff": {
+        "missing_in_target": [],
+        "found_in_target": [
+            {
+                "name": "bash",
+                "source_version": "GNU bash， 版本 4.2.46(2)-release (x86_64-redhat-linux-gnu)",
+                "found_in_rpms": [
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm",
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm"
+                ]
+            },
+            {
+                "name": "sh",
+                "source_version": "GNU bash， 版本 4.2.46(2)-release (x86_64-redhat-linux-gnu)",
+                "found_in_rpms": [
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm",
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm"
+                ]
+            },
+            {
+                "name": "python3.9",
+                "source_version": "Python 3.9.18",
+                "found_in_rpms": [
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm",
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm"
+                ]
+            },
+            {
+                "name": "gcc",
+                "source_version": "gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-44)",
+                "found_in_rpms": [
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm",
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm"
+                ]
+            },
+            {
+                "name": "git",
+                "source_version": "git version 1.8.3.1",
+                "found_in_rpms": [
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm",
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm"
+                ]
+            },
+            {
+                "name": "java",
+                "source_version": "",
+                "found_in_rpms": [
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm",
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm"
+                ]
+            },
+            {
+                "name": "systemctl",
+                "source_version": "systemd 219",
+                "found_in_rpms": [
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm",
+                    "bash-5.2.15-14.oe2403sp1.x86_64.rpm"
+                ]
+            }
+        ],
+        "version_info_note": "Target side no real version (just presence)."
+    }
+}

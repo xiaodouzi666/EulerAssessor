@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "target": "es2021",
+    "module": "commonjs",
+    "lib": ["dom", "es2021"],
+    "jsx": "react-jsx",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"],
+      "@*": ["*"]
+    },
+    "typeRoots": [
+      "./node_modules/@types", // 默认的类型声明
+      "./src/types" // 自定义类型声明
+    ],
+    // "strict": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "noUnusedLocals": false,
+    "ignoreDeprecations": "5.0",
+    "outDir": "./dll"
+  },
+  "include": ["src/**/*", "src/types/**/*"],
+  "exclude": ["dist/*"]
+}

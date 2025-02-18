@@ -15,27 +15,28 @@ CORS(app)
 @app.route("/api/collect/source", methods=["POST"])
 def collect_source():
     """
-    调用 collect_and_compare_all.py source
-    生成 source_all.json
-
-    返回:
-      {
-        "message": "Source system info collected successfully.",
-        "output_file": "source_all.json",
-        "stdout": "脚本执行的标准输出",
-        "data": {...}  # 如果文件存在，则返回 JSON 内容
-      }
-      或:
-      {
-        "error": "Failed to collect source system info.",
-        "stderr": "脚本执行的错误输出"
-      }
+    如果 source_all.json 已存在，就直接读取并返回；
+    否则执行 collect_and_compare_all.py source 生成。
     """
+    # 1) 先检查文件是否已存在
+    if os.path.exists("source_all.json"):
+        try:
+            with open("source_all.json", "r", encoding="utf-8") as f:
+                data_content = json.load(f)
+            return jsonify({
+                "message": "source_all.json already exists, skipping script execution.",
+                "output_file": "source_all.json",
+                "stdout": "",
+                "data": data_content
+            }), 200
+        except Exception as e:
+            return jsonify({"error": f"Error reading source_all.json: {e}"}), 500
+
+    # 2) 若不存在 => 调用脚本
     try:
         res = subprocess.run(["python3.9", "collect_and_compare_all.py", "source"],
                              capture_output=True, text=True)
         if res.returncode == 0:
-            # 如果脚本执行成功，再读取生成的 source_all.json
             data_content = None
             if os.path.exists("source_all.json"):
                 try:
@@ -61,22 +62,22 @@ def collect_source():
 @app.route("/api/collect/target", methods=["POST"])
 def collect_target():
     """
-    调用 collect_and_compare_all.py target
-    生成 target_all.json
-
-    返回:
-      {
-        "message": "Target system info collected successfully.",
-        "output_file": "target_all.json",
-        "stdout": "脚本执行的标准输出",
-        "data": {...}
-      }
-      或:
-      {
-        "error": "Failed to collect target system info.",
-        "stderr": "脚本执行的错误输出"
-      }
+    如果 target_all.json 已存在，就直接读取并返回；
+    否则执行 collect_and_compare_all.py target 生成。
     """
+    if os.path.exists("target_all.json"):
+        try:
+            with open("target_all.json", "r", encoding="utf-8") as f:
+                data_content = json.load(f)
+            return jsonify({
+                "message": "target_all.json already exists, skipping script execution.",
+                "output_file": "target_all.json",
+                "stdout": "",
+                "data": data_content
+            }), 200
+        except Exception as e:
+            return jsonify({"error": f"Error reading target_all.json: {e}"}), 500
+
     try:
         res = subprocess.run(["python3.9", "collect_and_compare_all.py", "target"],
                              capture_output=True, text=True)
@@ -110,22 +111,22 @@ def collect_target():
 @app.route("/api/packages/compare", methods=["POST"])
 def packages_compare():
     """
-    调用 difference.py 分析软件包差异 (sourceinfo.json vs. targetinfo.json)
-    生成 package_differences.json
-
-    返回:
-      {
-        "message": "Package differences analyzed",
-        "output_file": "package_differences.json",
-        "stdout": "脚本执行的标准输出",
-        "data": {...}
-      }
-      或:
-      {
-        "error": "Failed to analyze package differences",
-        "stderr": "脚本执行的错误输出"
-      }
+    如果 package_differences.json 已存在，就直接返回；
+    否则执行 difference.py 分析软件包差异。
     """
+    if os.path.exists("package_differences.json"):
+        try:
+            with open("package_differences.json", "r", encoding="utf-8") as f:
+                data_content = json.load(f)
+            return jsonify({
+                "message": "package_differences.json already exists, skipping script execution.",
+                "output_file": "package_differences.json",
+                "stdout": "",
+                "data": data_content
+            }), 200
+        except Exception as e:
+            return jsonify({"error": f"Error reading package_differences.json: {e}"}), 500
+
     try:
         cmd = ["python3.9", "difference.py"]
         res = subprocess.run(cmd, capture_output=True, text=True)
@@ -176,24 +177,22 @@ def packages_diff_result():
 @app.route("/api/compare", methods=["POST"])
 def compare_source_target():
     """
-    调用 collect_and_compare_all.py compare
-    用 source_all.json + target_all.json 做对比, 生成 all_diff.json
-    包含:
-      config_diff, hardware_diff, command_diff
-
-    返回:
-      {
-        "message": "Compare done",
-        "output_file": "all_diff.json",
-        "stdout": "脚本执行日志",
-        "data": {...}
-      }
-      或:
-      {
-        "error": "Compare command failed",
-        "stderr": "脚本错误输出"
-      }
+    如果 all_diff.json 已存在，就直接返回；
+    否则执行 collect_and_compare_all.py compare 生成。
     """
+    if os.path.exists("all_diff.json"):
+        try:
+            with open("all_diff.json", "r", encoding="utf-8") as f:
+                data_content = json.load(f)
+            return jsonify({
+                "message": "all_diff.json already exists, skipping script execution.",
+                "output_file": "all_diff.json",
+                "stdout": "",
+                "data": data_content
+            }), 200
+        except Exception as e:
+            return jsonify({"error": f"Error reading all_diff.json: {e}"}), 500
+
     try:
         res = subprocess.run(["python3.9", "collect_and_compare_all.py", "compare"],
                              capture_output=True, text=True)
@@ -218,6 +217,7 @@ def compare_source_target():
             }), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 
 @app.route("/api/diffresult", methods=["GET"])
@@ -505,7 +505,130 @@ def migration_assessment():
 
     return jsonify(assessment_data), 200
 
+@app.route("/api/mock_diff_data", methods=["GET"])
+def real_diff_data_for_config():
+    """
+    在真实环境下，用 source_all.json / target_all.json 中的 'config_files' 字段
+    来生成 oldJson / newJson，供前端在“配置文件对比”侧边栏做可视化。
+    另外，从 package_differences.json 中解析 added/removed/updated 包信息，
+    形成 packages_table，和之前 mock 时保持一致的字段结构。
+    """
+    source_all = {}
+    target_all = {}
+
+    try:
+        with open("source_all.json", "r", encoding="utf-8") as f:
+            source_all = json.load(f)
+    except Exception as e:
+        print(f"Error reading source_all.json: {e}")
+
+    try:
+        with open("target_all.json", "r", encoding="utf-8") as f:
+            target_all = json.load(f)
+    except Exception as e:
+        print(f"Error reading target_all.json: {e}")
+
+    # -----------------------
+    # 1. 提取 config_files
+    # -----------------------
+    src_files = source_all.get("config_files", [])
+    tgt_files = target_all.get("config_files", [])
+
+    # 构造字典: file_path => {content_lines, mode, etc.}
+    src_map = { item["file_path"]: item for item in src_files }
+    tgt_map = { item["file_path"]: item for item in tgt_files }
+
+    # oldJson: 源系统的全部 config_files
+    oldJson = {
+        "config_files": src_files
+    }
+    # newJson: 目标系统的全部 config_files
+    newJson = {
+        "config_files": tgt_files
+    }
+
+    # -----------------------
+    # 2. compatibility: (示例) 标记在两个系统中某些配置文件是否同名都存在
+    # -----------------------
+    compatibility = []
+    all_paths = set(src_map.keys()) | set(tgt_map.keys())
+
+    for fpath in sorted(all_paths):
+        old_ver = src_map.get(fpath, {}).get("exists", False)
+        new_ver = tgt_map.get(fpath, {}).get("exists", False)
+        compatibility.append({
+            "label": fpath,
+            "oldVer": old_ver,
+            "newVer": new_ver
+        })
+
+    # -----------------------
+    # 3. packages_table
+    #    从 package_differences.json 取 added/removed/updated 包并组装
+    # -----------------------
+    packages_table = []
+    try:
+        with open("package_differences.json", "r", encoding="utf-8") as pf:
+            pkg_diff = json.load(pf)
+
+        added_pkgs   = pkg_diff.get("added_packages", {})
+        removed_pkgs = pkg_diff.get("removed_packages", {})
+        updated_pkgs = pkg_diff.get("updated_packages", {})
+        
+        i = 1
+
+        # (1) 处理 added_packages
+        for pkg_name, detail in added_pkgs.items():
+            packages_table.append({
+                "key": i,
+                "name": detail["name"],
+                "version": detail["version"],
+                "tags": ["added"],
+                "action": "Install"
+            })
+            i += 1
+
+        # (2) 处理 removed_packages
+        for pkg_name, detail in removed_pkgs.items():
+            packages_table.append({
+                "key": i,
+                "name": detail["name"],
+                "version": detail["version"],
+                "tags": ["removed"],
+                "action": "Remove"
+            })
+            i += 1
+
+        # (3) 处理 updated_packages
+        # updated pkg 结构如: { "gcc": {"old_version":"4.8.5","new_version":"12.3.1"}}
+        for pkg_name, ver_info in updated_pkgs.items():
+            packages_table.append({
+                "key": i,
+                "name": pkg_name,
+                "version": f"{ver_info['old_version']} => {ver_info['new_version']}",
+                "tags": ["updated"],
+                "action": "Upgrade"
+            })
+            i += 1
+
+    except Exception as e:
+        print(f"Error reading package_differences.json: {e}")
+
+    # -----------------------
+    # 4. 组合返回
+    # -----------------------
+    result_data = {
+        "oldJson": oldJson,
+        "newJson": newJson,
+        "compatibility": compatibility,
+        "packages_table": packages_table
+    }
+
+    return jsonify(result_data), 200
+
+
 
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+

@@ -1,0 +1,130 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  user-select: none;
+  letter-spacing: 0.5px;
+  font-family: HarmonyOS Sans !important;
+}
+
+body {
+  min-width: 100vw;
+  min-height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+
+  /* fluentui scroll bar bugs */
+  overflow: hidden;
+}
+
+img {
+  -webkit-user-drag: none;
+}
+
+#simpro-root {
+  min-width: 100vw;
+  min-height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.txt {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 8px;
+  outline: 1px dashed #9747ff;
+  font-family: cursive;
+  border-radius: 4px;
+  --trunc: false;
+  animation: check 1s;
+  animation-timeline: scroll(x self);
+}
+
+.txt::after {
+  content: attr(data-title);
+  position: absolute;
+  top: 0;
+  width: fit-content;
+  left: 50%;
+  margin: auto;
+  transform: translate(-50%, -100%);
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 0.3em 1em;
+  border-radius: 4px;
+  color: #fff;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.2s 0.1s;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.notAllowed {
+  cursor: not-allowed;
+}
+
+@keyframes check {
+  from,
+  to {
+    --trunc: true;
+  }
+}
+
+@container style(--trunc: true) {
+  .txt:hover::after {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.txt-wrap {
+  position: relative;
+}
+
+@property --wheel-angle {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+@keyframes rotate {
+  100% {
+    --wheel-angle: 360deg;
+  }
+}
+
+@keyframes rotateReverse {
+  100% {
+    --wheel-angle: -360deg;
+  }
+}
+
+.animate-cw-rotate {
+  animation: rotate var(--speed-rotate) linear infinite;
+}
+
+.animate-ccw-rotate {
+  animation: rotateReverse var(--speed-rotate) linear infinite;
+}
