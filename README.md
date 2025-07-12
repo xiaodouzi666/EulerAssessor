@@ -128,3 +128,8 @@ npm run start
 其他侧边栏的功能，演示视频中已有详细的描述，辛苦查看一下演示视频。
 ## PS! ⚠️
 由于考虑到执行情况，我这边上传了完整的json文件，保存在根目录下的sample_json文件夹下，如果不想等待太长时间，想快速验证前端效果，可以吧这个文件夹下的json文件拖到EulerAssessor文件夹下即可。
+
+**PS：** 本项目是开放原子基金会比赛获奖项目，获奖情况如下：
+<img width="999" height="707" alt="image" src="https://github.com/user-attachments/assets/380ceb12-3f94-466d-b9f1-ed3a70c9216c" />
+
+相关获奖链接可以在开放原子atomgit官网查看。
